@@ -18,7 +18,7 @@ const Header = () => {
           <Button mr={5}>Home</Button>
         </Link>
         <Link to="/typing">
-          <Button mr={5}>Button</Button>
+          <Button mr={5}>Typing</Button>
         </Link>
         <ThemeToggle />
       </Box>
