@@ -11,6 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FaChartLine, FaKeyboard, FaTrophy } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const cardBgColor = useColorModeValue('white', 'gray.700');
@@ -28,15 +29,11 @@ const Home = () => {
                 Improve your typing speed and accuracy with our interactive
                 tests with
               </Text>
-              <Button
-                colorScheme="blue"
-                size="md"
-                onClick={() => {
-                  /* Navigate to test page */
-                }}
-              >
-                Start Typing Test
-              </Button>
+              <Link to="/typing">
+                <Button colorScheme="blue" size="md">
+                  Start Typing Test
+                </Button>
+              </Link>
             </VStack>
 
             {/* Features Section */}
@@ -100,15 +97,11 @@ const Home = () => {
                 Join hundreds of users who have enhanced their typing skills
                 with our platform.
               </Text>
-              <Button
-                colorScheme="green"
-                size="lg"
-                onClick={() => {
-                  /* Navigate to registration or test page */
-                }}
-              >
-                Get Started Now
-              </Button>
+              <Link to="/typing">
+                <Button colorScheme="green" size="lg">
+                  Get Started Now
+                </Button>
+              </Link>
             </VStack>
           </VStack>
         </Container>
