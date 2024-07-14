@@ -129,7 +129,10 @@ const TypingTimer: React.FC = () => {
     };
   };
 
-  function formatSecondsToMinutes(seconds: number): string {
+  function formatSecondsToMinutes(
+    seconds: number,
+    short: boolean = false
+  ): string {
     if (seconds < 0) {
       return 'Invalid input';
     }
@@ -137,8 +140,12 @@ const TypingTimer: React.FC = () => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
 
+    if (short) {
+      return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
     if (minutes === 0) {
-      return `${remainingSeconds.toFixed(0)} sec`;
+      return `${remainingSeconds} sec`;
     }
     if (remainingSeconds === 0) {
       return `${minutes} min`;
@@ -171,17 +178,20 @@ const TypingTimer: React.FC = () => {
       >
         <span>Typing Practice</span>
         <span>
-          [0:
-          {Math.max(0, TYPING_TEST_DURATION - 1 - elapsedSeconds)
-            .toString()
-            .padStart(2, '0')}
-          ]
+          {formatSecondsToMinutes(TYPING_TEST_DURATION - elapsedSeconds, true)}
         </span>
       </Text>
 
       <Divider my="4" />
 
-      <Text mb={4}>{SAMPLE_TEXT}</Text>
+      <Text
+        mb={4}
+        onCopy={() => {
+          navigator.clipboard.writeText("Cheating failed, you're too good!");
+        }}
+      >
+        {SAMPLE_TEXT}
+      </Text>
 
       <Textarea
         mt={5}
@@ -192,12 +202,17 @@ const TypingTimer: React.FC = () => {
         onFocus={handleInputFocus}
         ref={inputRef}
         disabled={isDisabled}
+        onPaste={() => setInputValue('')}
       />
 
       {typingSummary && (
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          isCentered
+        >
           <ModalOverlay />
-          <ModalContent py="5">
+          <ModalContent py="3">
             <ModalHeader>Typing Test Summary</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
