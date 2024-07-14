@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://free-typing-practice.vercel.app
+Host: https://tipest.vercel.app

@@ -12,7 +12,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 const pwaOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   manifest: {
-    short_name: 'free-typing-practice',
+    short_name: 'tipest',
     name: 'Free Typing Practice',
     lang: 'en',
     start_url: '/',

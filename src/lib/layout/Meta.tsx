@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 
-const APP_NAME = 'free-typing-practice';
+const APP_NAME = 'tipest';
 
 const Meta = () => {
   return (
