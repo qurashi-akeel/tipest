@@ -17,7 +17,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 
 const TYPING_TEST_DURATION = 60; // in seconds
 const SAMPLE_TEXT =
-  'Lorm ipum dolor sit amt coetur adipisicing elit. Delectus aut aspernatur totam atque reprehenderit blanditiis dolores obcaecati porro similique consectetur ut, distinctio odit vitae iste animi commodi quam neque expedita vel ullam quidem rerum.';
+  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta debitis facilis adipisci rem molestias unde dolore reiciendis, ut quibusdam nostrum voluptatem iure magnam consequatur! Neque nam odit possimus sunt, laboriosam hic, exercitationem dolorum voluptate molestiae ipsam, sed praesentium deleniti consequatur.';
 
 interface TimerState {
   startTime: number | null;
