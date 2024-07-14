@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Button,
 } from '@chakra-ui/react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
@@ -25,6 +26,7 @@ interface TimerState {
 }
 
 interface TypingSummary {
+  duration: number;
   totalWords: number;
   correctWords: number;
   typingSpeed: number;
@@ -57,12 +59,15 @@ const TypingTimer: React.FC = () => {
     const typingSpeed = Math.round(totalWords / minutes);
     const accuracy = Math.round((correctWords / totalWords) * 100);
 
-    setTypingSummary({
+    const summary = {
+      duration: elapsedSeconds,
       totalWords,
       correctWords,
       typingSpeed: Number.isNaN(typingSpeed) ? 0 : typingSpeed,
       accuracy: Number.isNaN(accuracy) ? 0 : accuracy,
-    });
+    };
+
+    setTypingSummary(summary);
   }, [inputValue, elapsedSeconds]);
 
   const endTypingTest = useCallback(() => {
@@ -112,6 +117,34 @@ const TypingTimer: React.FC = () => {
       startTimer();
     }
   };
+
+  const startNewAttempt = () => {
+    setInputValue('');
+    setElapsedSeconds(0);
+    setIsDisabled(false);
+    timerStateRef.current = {
+      startTime: null,
+      elapsedTime: 0,
+      timerInterval: null,
+    };
+  };
+
+  function formatSecondsToMinutes(seconds: number): string {
+    if (seconds < 0) {
+      return 'Invalid input';
+    }
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    if (minutes === 0) {
+      return `${remainingSeconds.toFixed(0)} sec`;
+    }
+    if (remainingSeconds === 0) {
+      return `${minutes} min`;
+    }
+    return `${minutes} min ${remainingSeconds} sec`;
+  }
 
   useEffect(() => {
     const currentTimerState = timerStateRef.current;
@@ -164,11 +197,17 @@ const TypingTimer: React.FC = () => {
       {typingSummary && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent py="5">
             <ModalHeader>Typing Test Summary</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <VStack align="stretch" spacing={2}>
+                <HStack justify="space-between">
+                  <Text>Typing Duration:</Text>
+                  <Text fontWeight="bold">
+                    {formatSecondsToMinutes(typingSummary.duration)}
+                  </Text>
+                </HStack>
                 <HStack justify="space-between">
                   <Text>Total Words:</Text>
                   <Text fontWeight="bold">{typingSummary.totalWords}</Text>
@@ -194,6 +233,16 @@ const TypingTimer: React.FC = () => {
           </ModalContent>
         </Modal>
       )}
+      <Box my={4}>
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          disabled={!typingSummary}
+          mr={2}
+        >
+          Show Last Result
+        </Button>
+        <Button onClick={startNewAttempt}>Start New Attempt</Button>
+      </Box>
     </Box>
   );
 };
