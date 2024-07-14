@@ -1,7 +1,7 @@
 import React from 'react';
 import type { PathRouteProps } from 'react-router-dom';
 
-import TypingPage from '../pages/typing';
+import TypingTimer from '../pages/typing';
 
 const Home = React.lazy(() => import('~/lib/pages/home'));
 
@@ -12,7 +12,7 @@ export const routes: Array<PathRouteProps> = [
   },
   {
     path: '/typing',
-    element: <TypingPage />,
+    element: <TypingTimer />,
   },
 ];
 
