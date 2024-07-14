@@ -13,13 +13,15 @@ const Header = () => {
       justifyContent="center"
       gridGap={2}
     >
-      <Box marginLeft="auto">
-        <Link to="/">
-          <Button mr={5}>Home</Button>
-        </Link>
-        <Link to="/typing">
-          <Button mr={5}>Start Practice</Button>
-        </Link>
+      <Box display="flex" justifyContent="space-between" width="full">
+        <div>
+          <Link to="/">
+            <Button mr={5}>Home</Button>
+          </Link>
+          <Link to="/typing">
+            <Button mr={5}>Start Practice</Button>
+          </Link>
+        </div>
         <ThemeToggle />
       </Box>
     </Flex>

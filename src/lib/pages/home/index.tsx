@@ -13,11 +13,10 @@ import {
 import { FaChartLine, FaKeyboard, FaTrophy } from 'react-icons/fa';
 
 const Home = () => {
-  const bgColor = useColorModeValue('gray.50', 'gray.800');
   const cardBgColor = useColorModeValue('white', 'gray.700');
   return (
     <Grid gap={4}>
-      <Box bg={bgColor} minH="100vh" py={10}>
+      <Box minH="100vh" py={10}>
         <Container maxW="container.xl">
           <VStack spacing={10} align="stretch">
             {/* Hero Section */}
