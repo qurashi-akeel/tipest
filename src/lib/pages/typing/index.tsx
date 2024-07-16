@@ -15,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
+import Settings from './settings';
+
 const TYPING_TEST_DURATION = 60; // in seconds
 const SAMPLE_TEXT =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta debitis facilis adipisci rem molestias unde dolore reiciendis, ut quibusdam nostrum voluptatem iure magnam consequatur! Neque nam odit possimus sunt, laboriosam hic, exercitationem dolorum voluptate molestiae ipsam, sed praesentium deleniti consequatur.';
@@ -177,9 +179,20 @@ const TypingTimer: React.FC = () => {
         justifyContent="space-between"
       >
         <span>Typing Practice</span>
-        <span>
-          {formatSecondsToMinutes(TYPING_TEST_DURATION - elapsedSeconds, true)}
-        </span>
+        <div>
+          <Box display="flex">
+            <span>
+              {formatSecondsToMinutes(
+                TYPING_TEST_DURATION - elapsedSeconds,
+                true
+              )}
+            </span>
+            <Text opacity="0.3" mx="4" fontWeight="100">
+              |
+            </Text>
+            <Settings />
+          </Box>
+        </div>
       </Text>
 
       <Divider my="4" />
