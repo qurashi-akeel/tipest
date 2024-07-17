@@ -1,25 +1,11 @@
-import {
-  Text,
-  Divider,
-  Textarea,
-  Box,
-  VStack,
-  HStack,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Button,
-} from '@chakra-ui/react';
+import { Text, Divider, Textarea, Box, Button } from '@chakra-ui/react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-import Settings from './settings';
+import { SAMPLE_TEXT, TYPING_TEST_DURATION } from '~/lib/constants';
+import { formatSecondsToMinutes } from '~/lib/utils';
 
-const TYPING_TEST_DURATION = 60; // in seconds
-const SAMPLE_TEXT =
-  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta debitis facilis adipisci rem molestias unde dolore reiciendis, ut quibusdam nostrum voluptatem iure magnam consequatur! Neque nam odit possimus sunt, laboriosam hic, exercitationem dolorum voluptate molestiae ipsam, sed praesentium deleniti consequatur.';
+import Settings from './settings';
+import SummaryModal from './summary-modal';
 
 interface TimerState {
   startTime: number | null;
@@ -131,30 +117,6 @@ const TypingTimer: React.FC = () => {
     };
   };
 
-  function formatSecondsToMinutes(
-    seconds: number,
-    short: boolean = false
-  ): string {
-    if (seconds < 0) {
-      return 'Invalid input';
-    }
-
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-
-    if (short) {
-      return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    }
-
-    if (minutes === 0) {
-      return `${remainingSeconds} sec`;
-    }
-    if (remainingSeconds === 0) {
-      return `${minutes} min`;
-    }
-    return `${minutes} min ${remainingSeconds} sec`;
-  }
-
   useEffect(() => {
     const currentTimerState = timerStateRef.current;
     return () => {
@@ -219,47 +181,11 @@ const TypingTimer: React.FC = () => {
       />
 
       {typingSummary && (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          isCentered
-        >
-          <ModalOverlay />
-          <ModalContent py="3">
-            <ModalHeader>Typing Test Summary</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <VStack align="stretch" spacing={2}>
-                <HStack justify="space-between">
-                  <Text>Typing Duration:</Text>
-                  <Text fontWeight="bold">
-                    {formatSecondsToMinutes(typingSummary.duration)}
-                  </Text>
-                </HStack>
-                <HStack justify="space-between">
-                  <Text>Total Words:</Text>
-                  <Text fontWeight="bold">{typingSummary.totalWords}</Text>
-                </HStack>
-                <HStack justify="space-between">
-                  <Text>Correct Words:</Text>
-                  <Text fontWeight="bold">{typingSummary.correctWords}</Text>
-                </HStack>
-                <HStack justify="space-between">
-                  <Text>Typing Speed:</Text>
-                  <Text fontWeight="bold">
-                    {typingSummary.typingSpeed} words per minute
-                  </Text>
-                </HStack>
-                <HStack justify="space-between">
-                  <Text>Accuracy:</Text>
-                  <Text fontWeight="bold">
-                    {typingSummary.accuracy.toFixed(2)}%
-                  </Text>
-                </HStack>
-              </VStack>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+        <SummaryModal
+          typingSummary={typingSummary}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        />
       )}
       <Box my={4}>
         <Button
