@@ -30,6 +30,7 @@ const TypingTimer: React.FC = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [sound, setSound] = useState('fire1');
   const timerStateRef = useRef<TimerState>({
     startTime: null,
     elapsedTime: 0,
@@ -94,6 +95,7 @@ const TypingTimer: React.FC = () => {
   }, [updateTimer]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    new Audio(`./assets/audio/${sound}.mp3`).play();
     setInputValue(event.target.value);
     if (event.target.value.length === 1) {
       startTimer();
@@ -152,7 +154,7 @@ const TypingTimer: React.FC = () => {
             <Text opacity="0.3" mx="4" fontWeight="100">
               |
             </Text>
-            <Settings />
+            <Settings setSound={setSound} sound={sound} />
           </Box>
         </div>
       </Text>
