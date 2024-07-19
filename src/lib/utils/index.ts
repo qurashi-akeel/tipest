@@ -21,3 +21,8 @@ export function formatSecondsToMinutes(
   }
   return `${minutes} min ${remainingSeconds} sec`;
 }
+
+// Generate random number from x to y
+export function randomNumber(x: number = 0, y: number = 9): number {
+  return Math.floor(Math.random() * (y - x + 1)) + x;
+}

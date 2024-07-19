@@ -1,6 +1,7 @@
 import {
   Alert,
   AlertIcon,
+  Box,
   Button,
   Modal,
   ModalBody,
@@ -15,6 +16,8 @@ import {
 } from '@chakra-ui/react';
 import { FaGears } from 'react-icons/fa6';
 
+import { PARAGRAPHS } from '~/lib/constants';
+
 const SOUNDS = [
   'silent',
   'ball1',
@@ -28,9 +31,16 @@ const SOUNDS = [
 type SettingsProps = {
   sound: string;
   setSound: (sound: string) => void;
+  setParagraphText: (paragraphText: string) => void;
+  paragraphText: string;
 };
 
-const Settings = ({ sound, setSound }: SettingsProps) => {
+const Settings = ({
+  sound,
+  setSound,
+  setParagraphText,
+  paragraphText,
+}: SettingsProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -56,19 +66,28 @@ const Settings = ({ sound, setSound }: SettingsProps) => {
                 </option>
               ))}
             </Select>
+            <Select
+              mt={5}
+              placeholder="Select paragraph"
+              value={paragraphText}
+              onChange={(e) => setParagraphText(e.target.value)}
+            >
+              {PARAGRAPHS.map((s) => (
+                <option key={s.id} value={s.content}>
+                  {`${s.level}: ${s.content.substring(0, 35)}...` ||
+                    'No content'}
+                </option>
+              ))}
+            </Select>
             <Alert status="warning" my="5">
               <AlertIcon />
-              <div>
-                <p>
-                  This feature is under active development, please be patient.
-                  You will see it soon.
-                </p>
-                <p>Options to choose from.</p>
+              <Box mx="4">
+                <p>More options coming soon.</p>
                 <ol style={{ marginLeft: '2em' }}>
-                  <li>Choose paragraph / custom text.</li>
+                  <li>Custom text.</li>
                   <li>Set duration.</li>
                 </ol>
-              </div>
+              </Box>
             </Alert>
           </ModalBody>
 

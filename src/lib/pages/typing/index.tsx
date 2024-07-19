@@ -1,8 +1,8 @@
 import { Text, Divider, Textarea, Box, Button } from '@chakra-ui/react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-import { SAMPLE_TEXT, TYPING_TEST_DURATION } from '~/lib/constants';
-import { formatSecondsToMinutes } from '~/lib/utils';
+import { PARAGRAPHS, TYPING_TEST_DURATION } from '~/lib/constants';
+import { formatSecondsToMinutes, randomNumber } from '~/lib/utils';
 
 import Settings from './settings';
 import SummaryModal from './summary-modal';
@@ -22,6 +22,9 @@ interface TypingSummary {
 }
 
 const TypingTimer: React.FC = () => {
+  const [paragraphText, setParagraphText] = useState(
+    PARAGRAPHS[randomNumber()].content
+  );
   const [inputValue, setInputValue] = useState<string>('');
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -38,7 +41,7 @@ const TypingTimer: React.FC = () => {
   });
 
   const calculateTypingSummary = useCallback(() => {
-    const sampleWords = SAMPLE_TEXT.trim().split(/\s+/);
+    const sampleWords = paragraphText.trim().split(/\s+/);
     const typedWords = inputValue.trim().split(/\s+/);
     const totalWords = typedWords.length;
     const correctWords = typedWords.reduce((count, word, index) => {
@@ -57,7 +60,7 @@ const TypingTimer: React.FC = () => {
     };
 
     setTypingSummary(summary);
-  }, [inputValue, elapsedSeconds]);
+  }, [inputValue, elapsedSeconds, paragraphText]);
 
   const endTypingTest = useCallback(() => {
     if (timerStateRef.current.timerInterval !== null) {
@@ -154,7 +157,12 @@ const TypingTimer: React.FC = () => {
             <Text opacity="0.3" mx="4" fontWeight="100">
               |
             </Text>
-            <Settings setSound={setSound} sound={sound} />
+            <Settings
+              setSound={setSound}
+              sound={sound}
+              setParagraphText={setParagraphText}
+              paragraphText={paragraphText}
+            />
           </Box>
         </div>
       </Text>
@@ -167,7 +175,7 @@ const TypingTimer: React.FC = () => {
           navigator.clipboard.writeText("Cheating failed, you're too good!");
         }}
       >
-        {SAMPLE_TEXT}
+        {paragraphText}
       </Text>
 
       <Textarea
