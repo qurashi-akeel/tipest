@@ -1,10 +1,12 @@
 import {
   Box,
+  Button,
   Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Select,
@@ -55,7 +57,7 @@ const Settings = ({
         <ModalContent>
           <ModalHeader>Typing Settings</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={5}>
+          <ModalBody>
             <Select
               placeholder="Select sound"
               value={sound}
@@ -107,6 +109,9 @@ const Settings = ({
               />
             </Box>
           </ModalBody>
+          <ModalFooter>
+            <Button onClick={onClose}>Save and Close</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>
