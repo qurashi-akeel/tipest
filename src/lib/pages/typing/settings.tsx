@@ -1,13 +1,10 @@
 import {
-  Alert,
-  AlertIcon,
   Box,
-  Button,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Select,
@@ -33,6 +30,8 @@ type SettingsProps = {
   setSound: (sound: string) => void;
   setParagraphText: (paragraphText: string) => void;
   paragraphText: string;
+  typingDuration: number;
+  setTypingDuration: (typingDuration: number) => void;
 };
 
 const Settings = ({
@@ -40,6 +39,8 @@ const Settings = ({
   setSound,
   setParagraphText,
   paragraphText,
+  typingDuration,
+  setTypingDuration,
 }: SettingsProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -54,7 +55,7 @@ const Settings = ({
         <ModalContent>
           <ModalHeader>Typing Settings</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody pb={5}>
             <Select
               placeholder="Select sound"
               value={sound}
@@ -79,31 +80,37 @@ const Settings = ({
                 </option>
               ))}
             </Select>
-            <Alert status="warning" my="5">
-              <AlertIcon />
-              <Box mx="4">
-                <p>More options coming soon.</p>
-                <ol style={{ marginLeft: '2em' }}>
-                  <li>Custom text.</li>
-                  <li>Set duration.</li>
-                </ol>
-              </Box>
-            </Alert>
+            <Box mt={5} display="flex" alignItems="center">
+              <Text mb={2} flex={2}>
+                Typing duration (sec)
+              </Text>
+              <Input
+                flex={2}
+                placeholder="Set typing duration"
+                value={typingDuration}
+                onChange={(e) => {
+                  if (+e.target.value < 10) {
+                    return setTypingDuration(10);
+                  }
+                  return setTypingDuration(Number(e.target.value));
+                }}
+                type="number"
+              />
+            </Box>
+            <Box mt={5} display="flex" alignItems="center">
+              <Text>Enter custom text</Text>
+              <Input
+                mt={2}
+                placeholder="Custom text"
+                value={paragraphText}
+                onChange={(e) => setParagraphText(e.target.value)}
+              />
+            </Box>
           </ModalBody>
-
-          <ModalFooter>
-            <Button
-              variant="solid"
-              disabled
-              cursor="not-allowed"
-              onClick={onClose} // TODO: implement this
-            >
-              Save Settings
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>
   );
 };
+
 export default Settings;

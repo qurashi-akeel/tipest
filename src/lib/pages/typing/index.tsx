@@ -25,6 +25,7 @@ const TypingTimer: React.FC = () => {
   const [paragraphText, setParagraphText] = useState(
     PARAGRAPHS[randomNumber()].content
   );
+  const [typingDuration, setTypingDuration] = useState(TYPING_TEST_DURATION);
   const [inputValue, setInputValue] = useState<string>('');
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -68,9 +69,9 @@ const TypingTimer: React.FC = () => {
       timerStateRef.current.timerInterval = null;
     }
     setIsDisabled(true);
-    setElapsedSeconds(TYPING_TEST_DURATION);
+    setElapsedSeconds(typingDuration);
     setIsModalOpen(true);
-  }, []);
+  }, [typingDuration]);
 
   const updateTimer = useCallback(() => {
     if (timerStateRef.current.startTime !== null) {
@@ -80,11 +81,11 @@ const TypingTimer: React.FC = () => {
       );
       setElapsedSeconds(newElapsedSeconds);
 
-      if (newElapsedSeconds >= TYPING_TEST_DURATION) {
+      if (newElapsedSeconds >= typingDuration) {
         endTypingTest();
       }
     }
-  }, [endTypingTest]);
+  }, [endTypingTest, typingDuration]);
 
   const startTimer = useCallback(() => {
     if (timerStateRef.current.timerInterval === null) {
@@ -98,7 +99,18 @@ const TypingTimer: React.FC = () => {
   }, [updateTimer]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    new Audio(`./assets/audio/${sound}.mp3`).play();
+    const currentElementIdx = event.target.value.length - 1;
+    const currentElement = event.target.value[currentElementIdx];
+
+    if (currentElementIdx >= paragraphText.length) {
+      endTypingTest(); // TODO: Fix duration & Add a sound effect
+    }
+
+    if (currentElement !== paragraphText[currentElementIdx]) {
+      new Audio(`./assets/audio/error2.mp3`).play();
+    } else {
+      new Audio(`./assets/audio/${sound}.mp3`).play();
+    }
     setInputValue(event.target.value);
     if (event.target.value.length === 1) {
       startTimer();
@@ -149,19 +161,18 @@ const TypingTimer: React.FC = () => {
         <div>
           <Box display="flex">
             <span>
-              {formatSecondsToMinutes(
-                TYPING_TEST_DURATION - elapsedSeconds,
-                true
-              )}
+              {formatSecondsToMinutes(typingDuration - elapsedSeconds, true)}
             </span>
             <Text opacity="0.3" mx="4" fontWeight="100">
               |
             </Text>
             <Settings
-              setSound={setSound}
               sound={sound}
-              setParagraphText={setParagraphText}
+              setSound={setSound}
               paragraphText={paragraphText}
+              setParagraphText={setParagraphText}
+              typingDuration={typingDuration}
+              setTypingDuration={setTypingDuration}
             />
           </Box>
         </div>
